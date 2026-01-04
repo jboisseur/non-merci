@@ -84,7 +84,6 @@
         }
         else {
             const nouvelAliment = ajouterItemDeListe(inputValue);
-            maListe.textContent = '';
             maListe.appendChild(nouvelAliment);
             exports.removeAttribute("hidden");
         }
@@ -122,7 +121,6 @@
 
     const charger = e => {
         new Response(e.target.files[0]).json().then(json => {
-            maListe.textContent = '';
             nom.value = json.id;            
             json.liste.forEach(item => {
                 const nouvelAliment = ajouterItemDeListe(item);
