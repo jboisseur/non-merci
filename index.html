@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fr-FR">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<title>Non merci</title>
+		<meta name="description" content="Partager ce dont on ne mange pas ; partager de bons moments">
+
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/kelpui@1/css/kelp.css">
+
+        <script type="module" src="https://cdn.jsdelivr.net/npm/kelpui@1/js/kelp.js"></script>
+		<script src="script.js" defer></script>
+	</head>
+	<body>
+		<header class="container-xl margin-end-m">
+			<h1>Non merci</h1>
+			<p class="size-2xl">Petite application pour éviter les impairs alimentaires.</p>
+			<p class="callout primary muted">Créez ou éditez la liste des aliments que vous ne mangez pas et envoyez-la à votre hôte, ça pourrait lui faciliter la vie. Bon appétit !</p>
+		</header>
+
+		<main class="container margin-start-6xl">
+
+			<kelp-tabs>
+				<ul class="list-inline primary size-xl" tabs>
+					<li><a href="#invitee">Je suis invité·e</a></li>
+					<li><a href="#hote">J'invite</a></li>
+				</ul>
+
+				<section id="invitee">
+					<h2>Créer ou éditer votre liste</h2>
+
+					<form>
+						<label for="maliste-edition">Vous avez déjà un export ? Vous pouvez le charger pour l'éditer.</label>
+						<input type="file" id="maliste-edition" name="maliste-edition" accept=".json,.csv">
+
+						<br>
+
+						<label for="nom">Apparaître sous le nom de</label>
+						<input type="text" id="nom" name="nom" required>
+
+						<label for="alimenthonni">Aliment à ajouter à la liste</label>
+						<input type="text" list="aliment-honni-liste" id="alimenthonni" name="aliment-honni">
+
+						<datalist id="aliment-honni-liste">
+						</datalist>
+
+						<button type="button" id="form">Ajouter</button>
+					</form>
+
+					<h2>Aliment(s) que vous ne mangez pas</h2>
+					<ul id="maliste" class="list-inline">La liste est vide ! Ajoutez un élément ?</ul>
+					<p id="message"></p>
+					<p hidden id="exports" class="callout secondary muted">Exporter au format <a id="exportjson" href="#" class="button">JSON</a> ou <span id="exportcsv">CSV</span></p>
+				</section>
+
+				<section id="hote">
+					<p>À venir</p>
+				</section>
+			</kelp-tabs>
+
+		</main>
+
+		<hr>
+
+		<footer class="container-xl margin-start-6xl size-s text-center">
+			<p>Merci à <a href="https://kelpui.com/" target="_blank">Kelp UI</a> pour l'interface.</p>
+		</footer>
+	</body>
+</html>
