@@ -7,9 +7,12 @@ La philosophie est de ne collecter aucune donnée personnelle et de rester d'un 
 
 # À faire
 Plein de choses, notamment :
-- Invité·e : vérifier le format des données, gérer les erreurs, gérer le cas où on supprime tous les items
-- Hôte : charger et agréger les listes dans un tableau et permettre une impression ; unicité des id à vérifier
+- Lecture des fichiers : vérifier le format des données, gérer les erreurs
+- Invité·e : exporter en ordre alpha, gérer le cas où on supprime tous les items
+- Hôte : compléter la ligne de l'aliment s'il existe déjà plutôt que dans créer un, permettre l'impression / récupération du tableau, cas où les fichiers sont ajoutés successivement plutôt qu'en même temps
+- Kelp UI : ouvrir une issue / faire une PR / faire un custom CSS pour la gestion des `th` hors `thead` + `tfoot`
 - Récupérer en masse une liste d'aliments pour la `datalist`, par API ?
+
 
 # Crédits
 Merci à [Kelp UI](https://kelpui.com/) pour l'interface !

@@ -1,17 +1,25 @@
 /*
-    Date de dernière modification : 2026-01-04
+    Date de dernière modification : 2026-01-10
 */
 
 //
-// Liste des aliments
+//  Partie Invité·e
 //
 
-    // Constantes et variables    
-    const datalist = document.getElementById("aliment-honni-liste");
+    // Constantes et variables
+    const datalist = document.getElementById("alimenthonni-datalist");
+    const msg = document.getElementById("message"); // todo: remplacer par un toast
+    const lienJSON = document.getElementById("exportjson");
+    const formulaire = document.getElementById('form');
+    const input = document.getElementById('alimenthonni');
+    const fichierInvite = document.getElementById("maliste-edition");
+    const maListeInvite = document.getElementById('maliste');
+    const champNom = document.getElementById("nom");
+    const exports = document.getElementById("exports");
 
     // Fonctions
     const ajouterOptions = () => {
-        // fetch
+        // Ajoute des <option> à l'élément <datalist> à partir d'un fichier
         fetch('./options.json')
         .then(response => {
             if (!response.ok) {
@@ -30,28 +38,8 @@
         .catch(error => {
             console.error('There has been a problem with your fetch operation:', error);
         });
-
-
     }
 
-    ajouterOptions();
-
-
-//
-//  Partie Invité·e
-//
-
-    // Constantes et variables
-    const msg = document.getElementById("message"); // todo: remplacer par un toast
-    const lienJSON = document.getElementById("exportjson");
-    const formulaire = document.querySelector('#form');
-    const input = document.querySelector('#alimenthonni');
-    const fichier = document.querySelector("#maliste-edition");
-    const maListe = document.querySelector('#maliste');
-    const nom = document.getElementById("nom");
-    const exports = document.getElementById("exports");
-
-    // Fonctions
     const recupListeAliments = () => {
         const listeHTML = document.querySelectorAll('.item');
         let listeTexte = [];
@@ -84,7 +72,7 @@
         }
         else {
             const nouvelAliment = ajouterItemDeListe(inputValue);
-            maListe.appendChild(nouvelAliment);
+            maListeInvite.appendChild(nouvelAliment);
             exports.removeAttribute("hidden");
         }
         
@@ -102,18 +90,21 @@
     const telecharger = (lien) => {
         const ajoutZero = n => { return n < 10 ? '0' + n : n };
         
-        const id = document.querySelector('#nom').value;
+        const nom = champNom.value;
         const texte = recupListeAliments();  
         const maintenant = new Date();
-        const date = maintenant.getFullYear().toString() + ajoutZero(maintenant.getMonth() + 1) + ajoutZero(maintenant.getDate()) + ajoutZero(maintenant.getHours()) + ajoutZero(maintenant.getMinutes()) + ajoutZero(maintenant.getSeconds());
+        const date = `${maintenant.getFullYear()}-${ajoutZero(maintenant.getMonth() + 1)}-${ajoutZero(maintenant.getDate())}T${ajoutZero(maintenant.getHours())}:${ajoutZero(maintenant.getMinutes())}:${ajoutZero(maintenant.getSeconds())}`;
 
         const maListe = {
-            "id": id,
+            "nom": nom,
             "liste": texte,
             "date": date
         }
+
+        let regex = /\D/gi;
+        const dateFileName = date.replaceAll(regex, "");
         
-        const nomFichier = `nonmerci_${id}_${date}.json`;
+        const nomFichier = `nonmerci_${nom}_${dateFileName}.json`;
         
         lien.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(JSON.stringify(maListe)));
         lien.setAttribute('download', nomFichier);
@@ -121,10 +112,10 @@
 
     const charger = e => {
         new Response(e.target.files[0]).json().then(json => {
-            nom.value = json.id;            
+            champNom.value = json.nom;            
             json.liste.forEach(item => {
                 const nouvelAliment = ajouterItemDeListe(item);
-                maListe.appendChild(nouvelAliment);
+                maListeInvite.appendChild(nouvelAliment);
             })
 
             exports.removeAttribute("hidden");
@@ -134,12 +125,74 @@
         }, err => {
             // todo Prendre en charge erreur de format
         })
-
-
     }
+
+    // Appel de fonction
+    ajouterOptions();
 
     // Écouteurs d'événements
     formulaire.addEventListener('click', ajouterAliment);
-    maListe.addEventListener('click', supprimerAliment);
+    maListeInvite.addEventListener('click', supprimerAliment);
     lienJSON.addEventListener('click', e => telecharger(lienJSON));
-    fichier.addEventListener('change', e => charger(e));
+    fichierInvite.addEventListener('change', e => charger(e));
+
+
+//
+//  Partie Hôte
+//
+
+    // Constantes et variables
+    const fichierHote = document.querySelector("#maliste-recuperation");
+    const tableHoteThead = document.querySelector("#table thead tr");
+    const tableHoteBody = document.querySelector("#table tbody");
+    const tableHoteFoot = document.querySelector("#table tfoot tr")
+
+    // Fonctions
+    const chargerHote = e => {
+        const nbFichiers = e.target.files.length;
+        // util : —
+        for (let i = 0; i < nbFichiers; i++) {
+            // Pour chaque fichier
+            new Response(e.target.files[i]).json().then(json => {
+                // Créer un table header
+                const thThead = document.createElement("th");
+                thThead.setAttribute("scope", "col");
+                thThead.textContent = json.nom;
+                tableHoteThead.appendChild(thThead);
+                
+                json.liste.forEach(item => {
+                    const tr = tableHoteBody.insertRow();                    
+
+                    // Aliment
+                    const thBody = document.createElement("th");
+                    thBody.setAttribute("scope", "row");
+                    thBody.textContent = item;
+                    tr.appendChild(thBody);
+
+                    // Ajouter autant de cellules qu'il y a de fichiers
+                    for (let j = 0 ; j < nbFichiers; j++) {
+                        tr.insertCell();
+                    }
+
+                    // Ajouter le sens interdit pour la colonne correspondant au fichier courant
+                    const non = document.createTextNode("⛔");
+                    tr.children[i + 1].appendChild(non);
+                })
+
+                // Ajouter la date dans le footer
+                const celluleDate = tableHoteFoot.insertCell(i + 1);
+                const date = new Date(Date.parse(json.date));
+                
+                const dateOptions = { year: "numeric", month: "short", day: "numeric"};
+                const dateTexte = document.createTextNode(date.toLocaleString("fr-FR", dateOptions));
+                celluleDate.appendChild(dateTexte);
+            
+            }, err => {
+                // todo Prendre en charge erreur
+            })
+        }
+            
+    }
+    
+    // Écouteurs d'événements
+    fichierHote.addEventListener('change', e => chargerHote(e));

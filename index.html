@@ -32,7 +32,7 @@
 
 					<form>
 						<label for="maliste-edition">Vous avez déjà un export ? Vous pouvez le charger pour l'éditer.</label>
-						<input type="file" id="maliste-edition" name="maliste-edition" accept=".json,.csv">
+						<input type="file" id="maliste-edition" name="maliste-edition" accept=".json,.csv,.txt">
 
 						<br>
 
@@ -40,9 +40,9 @@
 						<input type="text" id="nom" name="nom" required>
 
 						<label for="alimenthonni">Aliment à ajouter à la liste</label>
-						<input type="text" list="aliment-honni-liste" id="alimenthonni" name="aliment-honni">
+						<input type="text" list="alimenthonni-datalist" id="alimenthonni" name="aliment-honni">
 
-						<datalist id="aliment-honni-liste">
+						<datalist id="alimenthonni-datalist">
 						</datalist>
 
 						<button type="button" id="form">Ajouter</button>
@@ -55,7 +55,27 @@
 				</section>
 
 				<section id="hote">
-					<p>À venir</p>
+					<form>
+						<label for="maliste-recuperation">Charger une ou plusieurs listes confiées par vos proches</label>
+						<input type="file" id="maliste-recuperation" name="maliste-recuperation" accept=".json,.csv,.txt" multiple>
+					</form>
+
+					<div class="scroll-horizontal">
+						<table class="table-striped secondary" id="table">
+							<thead>
+								<tr>
+									<th scope="col">Aliment</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+							<tfoot>
+								<tr>
+									<th scope="row">Fichier daté du</th>
+								</tr>
+							</tfoot>
+						</table>
+					</div>
 				</section>
 			</kelp-tabs>
 
