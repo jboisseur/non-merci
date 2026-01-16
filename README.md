@@ -7,12 +7,23 @@ La philosophie est de ne collecter aucune donnée personnelle et de rester d'un 
 
 # À faire
 Plein de choses, notamment :
-- Lecture des fichiers : vérifier le format des données, gérer les erreurs
-- Invité·e : exporter en ordre alpha, gérer le cas où on supprime tous les items
-- Hôte : compléter la ligne de l'aliment s'il existe déjà plutôt que dans créer un, permettre l'impression / récupération du tableau, cas où les fichiers sont ajoutés successivement plutôt qu'en même temps
-- Kelp UI : ouvrir une issue / faire une PR / faire un custom CSS pour la gestion des `th` hors `thead` + `tfoot`
+- Lecture des fichiers : 
+   - vérifier le format des données
+   - gérer les erreurs
+   - gérer les doublons d'aliments orthographiés différemment
+- Hôte : 
+   - permettre l'impression / récupération du tableau (localStorage, fichier)
+   - possibilité de supprimer des colonnes
+- Invité·e : 
+   - écouter l'appui sur entrée pour ajouter un aliment voire tabulation ?
+   - préciser d'ajouter l'aliment au singulier
+- Kelp UI : 
+   - `th` hors `thead` + `tfoot` KO, signaler / réparer
+   - options de la `datalist` ne s'affichent par sur Firefox, signaler / réparer
+   - utiliser https://kelpui.com/docs/components/form-ajax/ pour les formulaires ?
+   - customiser
 - Récupérer en masse une liste d'aliments pour la `datalist`, par API ?
-
+- Personnaliser le bouton de chargement des fichiers ; indiquer quand un fichier est chargé
 
 # Crédits
 Merci à [Kelp UI](https://kelpui.com/) pour l'interface !

@@ -1,5 +1,5 @@
 /*
-    Date de dernière modification : 2026-01-10
+    Date de dernière modification : 2026-01-16
 */
 
 //
@@ -10,12 +10,12 @@
     const datalist = document.getElementById("alimenthonni-datalist");
     const msg = document.getElementById("message"); // todo: remplacer par un toast
     const lienJSON = document.getElementById("exportjson");
-    const formulaire = document.getElementById('form');
-    const input = document.getElementById('alimenthonni');
+    const formulaire = document.getElementById("form");
+    const input = document.getElementById("alimenthonni");
     const fichierInvite = document.getElementById("maliste-edition");
-    const maListeInvite = document.getElementById('maliste');
+    const maListeInvite = document.getElementById("maliste");
     const champNom = document.getElementById("nom");
-    const exports = document.getElementById("exports");
+    const recapInvite = document.getElementById("recapinvitee");
 
     // Fonctions
     const ajouterOptions = () => {
@@ -58,6 +58,9 @@
     }
     
     const ajouterAliment = () => {
+        // révélation du récapitulatif
+        recapInvite.removeAttribute("hidden");
+
         // remise à blanc du message
         msg.textContent = "";        
         
@@ -73,7 +76,6 @@
         else {
             const nouvelAliment = ajouterItemDeListe(inputValue);
             maListeInvite.appendChild(nouvelAliment);
-            exports.removeAttribute("hidden");
         }
         
         // remettre le champ à blanc
@@ -85,13 +87,17 @@
         if (aliment.classList.contains('delete')) {
             aliment.parentElement.remove();
         }
+        if (recupListeAliments().length === 0) {
+            // cacher le récapitulatif
+            recapInvite.setAttribute("hidden", "true");
+        }
     };
 
     const telecharger = (lien) => {
         const ajoutZero = n => { return n < 10 ? '0' + n : n };
         
         const nom = champNom.value;
-        const texte = recupListeAliments();  
+        const texte = recupListeAliments().sort();  
         const maintenant = new Date();
         const date = `${maintenant.getFullYear()}-${ajoutZero(maintenant.getMonth() + 1)}-${ajoutZero(maintenant.getDate())}T${ajoutZero(maintenant.getHours())}:${ajoutZero(maintenant.getMinutes())}:${ajoutZero(maintenant.getSeconds())}`;
 
@@ -118,8 +124,8 @@
                 maListeInvite.appendChild(nouvelAliment);
             })
 
-            exports.removeAttribute("hidden");
-
+            // révélation du récapitulatif
+            recapInvite.removeAttribute("hidden");
             // todo Ajouter une classe pour mettre une petite coche verte pour dire que c'est bien chargé
             
         }, err => {
@@ -143,56 +149,101 @@
 
     // Constantes et variables
     const fichierHote = document.querySelector("#maliste-recuperation");
+    const tableHote = document.getElementById("table");
     const tableHoteThead = document.querySelector("#table thead tr");
     const tableHoteBody = document.querySelector("#table tbody");
     const tableHoteFoot = document.querySelector("#table tfoot tr")
 
     // Fonctions
+    const getColonne = () => {
+        const nbLignes = tableHoteBody.rows.length;
+
+        let res = [];
+
+        for (let i = 0; i < nbLignes; i++) {
+            const tr = tableHoteBody.rows[i];
+            const td = tr.cells[0];
+                res.push(td.innerText);
+        }
+
+        return res;
+    }
+
     const chargerHote = e => {
+        // Afficher le tableau
+        tableHote.removeAttribute("hidden");
+
+        // Variables
+        const nonApplicable = "—";
+        const sensInterdit = "⛔";
+
+        // Traiter chaque fichier
         const nbFichiers = e.target.files.length;
-        // util : —
+
         for (let i = 0; i < nbFichiers; i++) {
-            // Pour chaque fichier
+            
             new Response(e.target.files[i]).json().then(json => {
-                // Créer un table header
+
+                // Créer une colonne
                 const thThead = document.createElement("th");
                 thThead.setAttribute("scope", "col");
                 thThead.textContent = json.nom;
                 tableHoteThead.appendChild(thThead);
-                
+
+                // Créer les lignes (une par aliment)           
                 json.liste.forEach(item => {
-                    const tr = tableHoteBody.insertRow();                    
-
-                    // Aliment
-                    const thBody = document.createElement("th");
-                    thBody.setAttribute("scope", "row");
-                    thBody.textContent = item;
-                    tr.appendChild(thBody);
-
-                    // Ajouter autant de cellules qu'il y a de fichiers
-                    for (let j = 0 ; j < nbFichiers; j++) {
-                        tr.insertCell();
+                    
+                    if (!getColonne().some(elem => elem === item)) {
+                        const tr = tableHoteBody.insertRow(); 
+                        const thBody = document.createElement("th");
+                        thBody.setAttribute("scope", "row");
+                        thBody.textContent = item;
+                        tr.appendChild(thBody); // todo à ajouter selon ordre alpha
                     }
+                })
 
-                    // Ajouter le sens interdit pour la colonne correspondant au fichier courant
-                    const non = document.createTextNode("⛔");
-                    tr.children[i + 1].appendChild(non);
+                // Créer les cellules (autant par ligne qu'il y a de colonnes)
+                const lignes = Array.from(tableHoteBody.rows);
+                const nbColonnes = tableHoteThead.cells.length - 1;
+    
+                lignes.forEach(ligne => {
+                    const nbCellules = ligne.cells.length - 1;
+                    for (let j = nbCellules; j < nbColonnes; j++) {
+                        ligne.insertCell();
+                    }
+                })
+
+                // Remplir les cellules
+                lignes.forEach(ligne => {
+                    const cells = Array.from(ligne.cells);
+                    
+                    const alimentTableau = cells[0].textContent;
+
+                    for (let j = 1; j < cells.length; j++ ) {
+                        // Vérifier si l'aliment est présent dans le fichier json
+
+
+
+                        if (json.liste.includes(alimentTableau) && cells[j].cellIndex === nbColonnes) {
+                                cells[j].textContent= sensInterdit;                            
+                        }
+
+                        else {
+                            if (cells[j].textContent == "") {
+                                cells[j].textContent = nonApplicable;
+                            }
+                        }                        
+                    }
                 })
 
                 // Ajouter la date dans le footer
-                const celluleDate = tableHoteFoot.insertCell(i + 1);
-                const date = new Date(Date.parse(json.date));
-                
+                const celluleDate = tableHoteFoot.insertCell();
+                const date = new Date(Date.parse(json.date));                
                 const dateOptions = { year: "numeric", month: "short", day: "numeric"};
                 const dateTexte = document.createTextNode(date.toLocaleString("fr-FR", dateOptions));
                 celluleDate.appendChild(dateTexte);
-            
-            }, err => {
-                // todo Prendre en charge erreur
             })
-        }
-            
-    }
+        }}            
     
     // Écouteurs d'événements
     fichierHote.addEventListener('change', e => chargerHote(e));
