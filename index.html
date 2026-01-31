@@ -29,16 +29,17 @@
 						<br>
 						<label for="nom">Apparaître sous le nom de</label>
 						<input type="text" id="nom" name="nom" placeholder="ex. Juju" required>
-						<label for="alimenthonni">Aliment à ajouter à la liste</label>
-						<input type="text" list="alimenthonni-datalist" id="alimenthonni" name="aliment-honni" placeholder="ex. chou fleur">
+						<label for="alimenthonni" class="margin-end-0">Aliment à ajouter à la liste</label>
+						<p class="size-3xs margin-start-5xs margin-end-5xs">Préférer le singulier (par exemple "poireau" plutôt que "poireaux")</p>
+						<input type="text" list="alimenthonni-datalist" id="alimenthonni" name="aliment-honni" placeholder="ex. endive">
 						<datalist id="alimenthonni-datalist">
 						</datalist>
 						<button type="button" id="form">Ajouter</button>
 					</form>
 					<div id="recapinvitee" hidden>
+						<p id="message" class="text-color warning"></p>
 						<h2>Aliment(s) que vous ne mangez pas</h2>
 						<ul id="maliste" class="list-inline"></ul>
-						<p id="message"></p>
 						<p id="exports" class="callout secondary muted">Exporter au format <a id="exportjson" href="#" class="button">JSON</a> ou <span id="exportcsv">CSV</span></p>
 					</div>
 				</section>

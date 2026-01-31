@@ -1,5 +1,5 @@
 /*
-    Date de dernière modification : 2026-01-16
+    Date de dernière modification : 2026-01-31
 */
 
 //
@@ -44,7 +44,7 @@
         const listeHTML = document.querySelectorAll('.item');
         let listeTexte = [];
         for (let i = 0; i < listeHTML.length; i++) { 
-            listeTexte.push(listeHTML[i].textContent)
+            listeTexte.push(listeHTML[i].textContent.trim().toLowerCase())
         }
         return listeTexte;
     };
@@ -65,13 +65,14 @@
         msg.textContent = "";        
         
         // récupère le texte entré en input
-        const inputValue = input.value;
+        const inputValue = input.value.trim().toLowerCase();
         
         // vérifie si n'est pas déjà dans la liste et si non, ajoute à la 
         const listeTexte = recupListeAliments();
         
         if (listeTexte.some(listeTexte => listeTexte === inputValue) ) {
-            msg.textContent = "Cet aliment est déjà présent dans la liste";
+            msg.textContent = "Cet aliment est déjà présent dans la liste 😌";
+            //todo : à visibiliser
         }
         else {
             const nouvelAliment = ajouterItemDeListe(inputValue);
@@ -184,6 +185,10 @@
             
             new Response(e.target.files[i]).json().then(json => {
 
+                // Uniformiser les données
+                const liste = [];
+                json.liste.forEach(item => { liste.push(item.trim().toLowerCase()) });
+
                 // Créer une colonne
                 const thThead = document.createElement("th");
                 thThead.setAttribute("scope", "col");
@@ -191,8 +196,8 @@
                 tableHoteThead.appendChild(thThead);
 
                 // Créer les lignes (une par aliment)           
-                json.liste.forEach(item => {
-                    
+                liste.forEach(item => {
+
                     if (!getColonne().some(elem => elem === item)) {
                         const tr = tableHoteBody.insertRow(); 
                         const thBody = document.createElement("th");
@@ -222,9 +227,7 @@
                     for (let j = 1; j < cells.length; j++ ) {
                         // Vérifier si l'aliment est présent dans le fichier json
 
-
-
-                        if (json.liste.includes(alimentTableau) && cells[j].cellIndex === nbColonnes) {
+                        if (liste.includes(alimentTableau) && cells[j].cellIndex === nbColonnes) {
                                 cells[j].textContent= sensInterdit;                            
                         }
 

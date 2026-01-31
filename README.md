@@ -6,24 +6,36 @@ La philosophie est de ne collecter aucune donnée personnelle et de rester d'un 
 [Démo](https://nonmerci.jboisseur.xyz/)
 
 # À faire
-Plein de choses, notamment :
+## Préalable à la bêta
 - Lecture des fichiers : 
    - vérifier le format des données
    - gérer les erreurs
-   - gérer les doublons d'aliments orthographiés différemment
 - Hôte : 
+   - ordre alphabétique
    - permettre l'impression / récupération du tableau (localStorage, fichier)
    - possibilité de supprimer des colonnes
 - Invité·e : 
-   - écouter l'appui sur entrée pour ajouter un aliment voire tabulation ?
-   - préciser d'ajouter l'aliment au singulier
+   - faciliter le partage (Signal, What's app, mail)
+- Interface :
+   - clarifier le concept : formulaire progressif pour la partie "Je suis invité·e" ? 
+   - options de la `datalist` ne s'affichent par sur Firefox, mettre en place une alternative / signaler
+   - customiser
+- Github : préciser les règles de contribution et ajouter un lien en bas de page
+
+## Et ensuite
+- Lecture des fichiers : 
+   - gérer les doublons d'aliments orthographiés différemment (pluriels, faute de frappe / orthographe...)
+- Invité·e : 
+   - écouter entrée et tabulation pour ajouter un élément ?
+   - mettre un placeholder aléatoire pour l'aliment à ajouter à la liste
 - Kelp UI : 
    - `th` hors `thead` + `tfoot` KO, signaler / réparer
-   - options de la `datalist` ne s'affichent par sur Firefox, signaler / réparer
    - utiliser https://kelpui.com/docs/components/form-ajax/ pour les formulaires ?
-   - customiser
 - Récupérer en masse une liste d'aliments pour la `datalist`, par API ?
 - Personnaliser le bouton de chargement des fichiers ; indiquer quand un fichier est chargé
+- Internationalisation
+- Proposer des recettes de base en fonction (éliminer les options incompatibles)
+- Passer les vérifications côté serveur ?
 
 # Crédits
 Merci à [Kelp UI](https://kelpui.com/) pour l'interface !
