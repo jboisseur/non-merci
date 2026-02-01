@@ -8,6 +8,7 @@
 
     // Constantes et variables
     const datalist = document.getElementById("alimenthonni-datalist");
+    const datalistFallback = document.querySelector('select[name="aliment-honni"]');
     const msg = document.getElementById("message");
     const lienTelechargement = document.getElementById("export");
     const formulaire = document.getElementById("form");
@@ -38,6 +39,7 @@
                     const nouvelItem = document.createElement('option');
                     nouvelItem.setAttribute('value', item)
                     datalist.appendChild(nouvelItem);
+                    datalistFallback.appendChild(nouvelItem);
                 })
             }
             else {

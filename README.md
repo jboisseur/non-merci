@@ -19,7 +19,7 @@ La philosophie est de ne collecter aucune donnée personnelle et de rester d'un 
    - une fois qu'il y a au moins un ingrédient, retirer le "required" du champ aliment. Remettre sur la liste est vide
    - n'autoriser l'export que s'il y a au moins 1 aliment et 1 nom
 - Interface :
-   - options de la `datalist` ne s'affichent par sur Firefox, mettre en place une alternative / signaler
+   - options de la `datalist` ne s'affichent par sur Firefox, mettre en place une alternative / signaler (résolu ?)
    - customiser
 - Github : préciser les règles de contribution
 
