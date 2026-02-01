@@ -17,16 +17,18 @@ La philosophie est de ne collecter aucune donnée personnelle et de rester d'un 
 - Invité·e : 
    - inviter à partager la liste par Signal, What's app, mail
    - une fois qu'il y a au moins un ingrédient, retirer le "required" du champ aliment. Remettre sur la liste est vide
+   - n'autoriser l'export que s'il y a au moins 1 aliment et 1 nom
 - Interface :
    - options de la `datalist` ne s'affichent par sur Firefox, mettre en place une alternative / signaler
    - customiser
-- Github : préciser les règles de contribution et ajouter un lien en bas de page
+- Github : préciser les règles de contribution
 
 ## Et ensuite
 - Lecture des fichiers : 
    - gérer les doublons d'aliments orthographiés différemment (pluriels, faute de frappe / orthographe...)
 - Invité·e : 
    - écouter entrée et tabulation pour ajouter un élément ?
+   - vérifier si l'élément ajouté ne contient que du texte
    - mettre un placeholder aléatoire pour l'aliment à ajouter à la liste
    - afficher le poids estimé du fichier cible
 - Kelp UI : 

@@ -1,5 +1,5 @@
 /*
-    Date de dernière modification : 2026-01-31
+    Date de dernière modification : 2026-02-01
 */
 
 //
@@ -8,9 +8,10 @@
 
     // Constantes et variables
     const datalist = document.getElementById("alimenthonni-datalist");
-    const msg = document.getElementById("message"); // todo: remplacer par un toast
-    const lienJSON = document.getElementById("exportjson");
+    const msg = document.getElementById("message");
+    const lienTelechargement = document.getElementById("export");
     const formulaire = document.getElementById("form");
+    const msgEdition = document.getElementById("communicationedition");
     const input = document.getElementById("alimenthonni");
     const fichierInvite = document.getElementById("maliste-edition");
     const maListeInvite = document.getElementById("maliste");
@@ -23,20 +24,28 @@
         fetch('./options.json')
         .then(response => {
             if (!response.ok) {
-                throw new Error('Network response was not ok ' + response.statusText);
+                throw new Error(`Failed fetching options list. Status: ${response.status} ${response.statusText}`);
             }
-            return response.json();
+            else {
+                return response.json();
+            }
         })
         .then(data => {
-            const sorted = data.options.sort();
-            sorted.forEach(item => {
-                const nouvelItem = document.createElement('option');
-                nouvelItem.setAttribute('value', item)
-                datalist.appendChild(nouvelItem);
-            })
+            // Vérifications : la clé "options" existe et c'est un array de chaines de texte
+            if(data.options && Array.isArray(data.options) && data.options.every(item => typeof item === 'string')) {
+                const sorted = data.options.sort();
+                sorted.forEach(item => {
+                    const nouvelItem = document.createElement('option');
+                    nouvelItem.setAttribute('value', item)
+                    datalist.appendChild(nouvelItem);
+                })
+            }
+            else {
+                console.error(`Error: failed options list verifications.`)
+            }
         })
         .catch(error => {
-            console.error('There has been a problem with your fetch operation:', error);
+            console.error(`Failed reading file. Error: ${error}`);
         });
     }
 
@@ -58,11 +67,8 @@
     }
     
     const ajouterAliment = () => {
-        // révélation du récapitulatif
-        recapInvite.removeAttribute("hidden");
-
         // remise à blanc du message
-        msg.textContent = "";        
+        msg.setAttribute("hidden", "true");        
         
         // récupère le texte entré en input
         const inputValue = input.value.trim().toLowerCase();
@@ -70,15 +76,20 @@
         // récupère les aliments déjà ajoutés        
         const listeTexte = recupListeAliments();
 
-        // vérifie si n'est pas déjà dans la liste
+        // vérifie si la donnée entrée est vide
         if (!inputValue) {
+            msg.removeAttribute("hidden");
             msg.textContent = "Il n'y a pas d'aliment à ajouter";
         }
+
         // vérifie si n'est pas déjà dans la liste
         else if (listeTexte.some(listeTexte => listeTexte === inputValue) ) {
             msg.textContent = "Cet aliment est déjà présent dans la liste 😌";
         }
         else {
+            // révélation du récapitulatif
+            recapInvite.removeAttribute("hidden");
+
             const nouvelAliment = ajouterItemDeListe(inputValue);
             maListeInvite.appendChild(nouvelAliment);
         }
@@ -123,18 +134,47 @@
 
     const charger = e => {
         new Response(e.target.files[0]).json().then(json => {
-            champNom.value = json.nom;            
-            json.liste.forEach(item => {
-                const nouvelAliment = ajouterItemDeListe(item);
-                maListeInvite.appendChild(nouvelAliment);
-            })
 
-            // révélation du récapitulatif
-            recapInvite.removeAttribute("hidden");
-            // todo Ajouter une classe pour mettre une petite coche verte pour dire que c'est bien chargé
-            
+            if(typeof json.nom === 'string' && json.liste.every(item => typeof item === 'string')) {
+
+                // On masque l'éventuel message d'erreur
+                msgEdition.setAttribute("hidden", "true");
+
+                // On montre le nom du fichier chargé
+                msgEdition.removeAttribute("hidden");
+                msgEdition.classList.remove("danger");
+                msgEdition.classList.add("success");
+                msgEdition.innerHTML = `<strong>${e.target.files[0].name}</strong> chargé !`;
+
+                // On remplit les champs
+                    // Nom
+                    champNom.value = json.nom;
+                    
+                    // Liste
+                    json.liste.forEach(item => {
+                        const nouvelAliment = ajouterItemDeListe(item);
+                        maListeInvite.appendChild(nouvelAliment);
+                    })
+
+                // On montre le récapitulatif
+                recapInvite.removeAttribute("hidden");
+            }
+
+            else {
+                msgEdition.removeAttribute("hidden");
+                msgEdition.classList.remove("success");
+                msgEdition.classList.add("danger");
+                msgEdition.textContent = "Il y a un problème avec la structure du fichier.";
+            }
         }, err => {
-            // todo Prendre en charge erreur de format
+            // Console
+            console.error(`Failed reading file. Error: ${err}`);
+
+            // Interface
+            msgEdition.removeAttribute("hidden");
+            msgEdition.classList.remove("success");
+            msgEdition.classList.add("danger");
+            msgEdition.textContent = "Le fichier n'a pas pu être chargé. Veuillez réessayer.";
         })
     }
 
@@ -144,7 +184,7 @@
     // Écouteurs d'événements
     formulaire.addEventListener('click', ajouterAliment);
     maListeInvite.addEventListener('click', supprimerAliment);
-    lienJSON.addEventListener('click', e => telecharger(lienJSON));
+    lienTelechargement.addEventListener('click', e => telecharger(lienTelechargement));
     fichierInvite.addEventListener('change', e => charger(e));
 
 
