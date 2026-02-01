@@ -66,13 +66,17 @@
         
         // récupère le texte entré en input
         const inputValue = input.value.trim().toLowerCase();
-        
-        // vérifie si n'est pas déjà dans la liste et si non, ajoute à la 
+
+        // récupère les aliments déjà ajoutés        
         const listeTexte = recupListeAliments();
-        
-        if (listeTexte.some(listeTexte => listeTexte === inputValue) ) {
+
+        // vérifie si n'est pas déjà dans la liste
+        if (!inputValue) {
+            msg.textContent = "Il n'y a pas d'aliment à ajouter";
+        }
+        // vérifie si n'est pas déjà dans la liste
+        else if (listeTexte.some(listeTexte => listeTexte === inputValue) ) {
             msg.textContent = "Cet aliment est déjà présent dans la liste 😌";
-            //todo : à visibiliser
         }
         else {
             const nouvelAliment = ajouterItemDeListe(inputValue);
@@ -111,7 +115,7 @@
         let regex = /\D/gi;
         const dateFileName = date.replaceAll(regex, "");
         
-        const nomFichier = `nonmerci_${nom}_${dateFileName}.json`;
+        const nomFichier = `nonmerci_${nom}_${dateFileName}.txt`;
         
         lien.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(JSON.stringify(maListe)));
         lien.setAttribute('download', nomFichier);

@@ -15,9 +15,9 @@ La philosophie est de ne collecter aucune donnée personnelle et de rester d'un 
    - permettre l'impression / récupération du tableau (localStorage, fichier)
    - possibilité de supprimer des colonnes
 - Invité·e : 
-   - faciliter le partage (Signal, What's app, mail)
+   - inviter à partager la liste par Signal, What's app, mail
+   - une fois qu'il y a au moins un ingrédient, retirer le "required" du champ aliment. Remettre sur la liste est vide
 - Interface :
-   - clarifier le concept : formulaire progressif pour la partie "Je suis invité·e" ? 
    - options de la `datalist` ne s'affichent par sur Firefox, mettre en place une alternative / signaler
    - customiser
 - Github : préciser les règles de contribution et ajouter un lien en bas de page
@@ -28,6 +28,7 @@ La philosophie est de ne collecter aucune donnée personnelle et de rester d'un 
 - Invité·e : 
    - écouter entrée et tabulation pour ajouter un élément ?
    - mettre un placeholder aléatoire pour l'aliment à ajouter à la liste
+   - afficher le poids estimé du fichier cible
 - Kelp UI : 
    - `th` hors `thead` + `tfoot` KO, signaler / réparer
    - utiliser https://kelpui.com/docs/components/form-ajax/ pour les formulaires ?

@@ -15,41 +15,52 @@
 			<p class="size-2xl">Petite application pour éviter les impairs alimentaires.</p>
 			<p class="callout primary muted">Créez ou éditez la liste des aliments que vous ne mangez pas et envoyez-la à votre hôte, ça pourrait lui faciliter la vie. Bon appétit !</p>
 		</header>
-		<main class="container margin-start-6xl">
+		<main class="container-xl margin-start-6xl">
+
 			<kelp-tabs>
-				<ul class="list-inline primary size-xl" tabs>
-					<li><a href="#invitee">Je suis invité·e</a></li>
-					<li><a href="#hote">J'invite</a></li>
+				<ul class="list-inline size-xl" tabs>
+					<li><a href="#invitee"><span class="padding-l">Je suis invité·e</span></a></li>
+					<li><a href="#hote"><span class="padding-l">J'invite</span></a></li>
 				</ul>
+
 				<section id="invitee">
-					<h2>Créer ou éditer votre liste</h2>
 					<form>
-						<label for="maliste-edition">Vous avez déjà une liste ? Vous pouvez la charger pour l'éditer.</label>
-						<input type="file" id="maliste-edition" name="maliste-edition" accept=".json,.csv,.txt">
-						<br>
-						<label for="nom">Apparaître sous le nom de</label>
+						<div class="sidecar">
+							<h2>Créer ou éditer ma liste</h2>
+							<label for="maliste-edition" class="btn muted primary inline">Éditer</label>
+							<input type="file" id="maliste-edition" name="maliste-edition" accept=".txt" class="visually-hidden">
+						</div>
+
+						<label for="nom">Apparaître sous le nom de <span class="text-color danger size-3xs">*</span></label>
 						<input type="text" id="nom" name="nom" placeholder="ex. Juju" required>
-						<label for="alimenthonni" class="margin-end-0">Aliment à ajouter à la liste</label>
+
+						<label for="alimenthonni" class="margin-end-0">Aliment à ajouter à la liste <span class="text-color danger size-3xs">*</span></label>
 						<p class="size-3xs margin-start-5xs margin-end-5xs">Préférer le singulier (par exemple "poireau" plutôt que "poireaux")</p>
-						<input type="text" list="alimenthonni-datalist" id="alimenthonni" name="aliment-honni" placeholder="ex. endive">
+						<input type="text" list="alimenthonni-datalist" id="alimenthonni" name="aliment-honni" placeholder="ex. endive" required>
 						<datalist id="alimenthonni-datalist">
 						</datalist>
-						<button type="button" id="form">Ajouter</button>
+
+						<button type="button" id="form" class="block primary muted">Ajouter un aliment</button>
 					</form>
+
 					<div id="recapinvitee" hidden>
 						<p id="message" class="text-color warning"></p>
 						<h2>Aliment(s) que vous ne mangez pas</h2>
 						<ul id="maliste" class="list-inline"></ul>
-						<p id="exports" class="callout secondary muted">Exporter au format <a id="exportjson" href="#" class="button">JSON</a> ou <span id="exportcsv">CSV</span></p>
+						<p id="exports"><a id="exportjson" href="#" class="btn callout block primary vivid">Exporter la liste</a></p>
 					</div>
 				</section>
+
 				<section id="hote">
 					<form>
-						<label for="maliste-recuperation">Charger une ou plusieurs listes confiées par vos proches</label>
-						<input type="file" id="maliste-recuperation" name="maliste-recuperation" accept=".json,.csv,.txt" multiple>
+						<div class="sidecar">
+							<h2>Afficher une ou plusieurs listes confiées par vos proches</h2>
+							<label for="maliste-recuperation"  class="btn muted primary inline">Parcourir…</label>
+							<input type="file" id="maliste-recuperation" name="maliste-recuperation" accept=".txt" multiple class="visually-hidden">
+						</div>
 					</form>
 					<div class="scroll-horizontal">
-						<table class="table-striped secondary" id="table" hidden>
+						<table class="table-striped primary" id="table" hidden>
 							<thead>
 								<tr>
 									<th scope="col">Aliment</th>
@@ -65,7 +76,9 @@
 						</table>
 					</div>
 				</section>
+
 			</kelp-tabs>
+
 		</main>
 		<br>
 		<footer class="container-xl margin-start-6xl size-s text-center">
