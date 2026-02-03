@@ -18,14 +18,14 @@
 		<main class="container-xl margin-start-6xl">
 
 			<kelp-tabs>
-				<ul class="list-inline" tabs>
-					<li><a href="#invitee"><span class="padding-l">Je suis invité·e</span></a></li>
-					<li><a href="#hote"><span class="padding-l">J'invite</span></a></li>
+				<ul class="list-inline justify-center" tabs>
+					<li><a href="#invitee">Je suis invité·e</a></li>
+					<li><a href="#hote">J'invite</a></li>
 				</ul>
 
-				<section id="invitee">
+				<section id="invitee" class="callout outline">
 					<form>
-						<div class="sidecar">
+						<div class="sidecar align-center">
 							<h2>Créer ou éditer ma liste</h2>
 							<label for="maliste-edition" class="btn muted primary inline">Éditer</label>
 							<input type="file" id="maliste-edition" name="maliste-edition" accept=".txt" class="visually-hidden">
@@ -38,10 +38,10 @@
 
 						<label for="alimenthonni" class="margin-end-0">Aliment à ajouter à la liste <span class="text-color danger size-3xs">*</span></label>
 						<p class="size-3xs margin-start-5xs margin-end-5xs">Préférer le singulier (par exemple "poireau" plutôt que "poireaux")</p>
-						<input type="text" list="alimenthonni-datalist" id="alimenthonni" name="aliment-honni" placeholder="ex. endive" required>
+						<input list="alimenthonni-datalist" id="alimenthonni" name="alimenthonni" placeholder="ex. endive" required>
 						<datalist id="alimenthonni-datalist">
 							<label>ou sélectionner dans la liste :
-								<select name="aliment-honni"></select>
+								<select name="alimenthonni"></select>
 							</label>
 						</datalist>
 
@@ -57,7 +57,7 @@
 					</div>
 				</section>
 
-				<section id="hote">
+				<section id="hote" class="callout outline">
 					<form>
 						<div class="sidecar">
 							<h2>Afficher une ou plusieurs listes confiées par vos proches</h2>
