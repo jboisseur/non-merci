@@ -8,7 +8,7 @@
 
     // Constantes et variables
     const datalist = document.getElementById("alimenthonni-datalist");
-    const datalistFallback = document.querySelector('select[name="alimenthonni"]');
+    const datalistInput = document.getElementById("alimenthonni");
     const msg = document.getElementById("message");
     const lienTelechargement = document.getElementById("export");
     const formulaire = document.getElementById("form");
@@ -37,10 +37,8 @@
                 const sorted = data.options.sort();
                 sorted.forEach(item => {
                     const nouvelItem = document.createElement('option');
-                    nouvelItem.setAttribute('value', item)
-                    nouvelItem.textContent = item;
+                    nouvelItem.setAttribute('value', item);
                     datalist.appendChild(nouvelItem);
-                    datalistFallback.appendChild(nouvelItem);
                 })
             }
             else {
@@ -186,6 +184,7 @@
 
     // Écouteurs d'événements
     formulaire.addEventListener('click', ajouterAliment);
+    datalistInput.addEventListener("focus", e => e.currentTarget.showPicker());
     maListeInvite.addEventListener('click', supprimerAliment);
     lienTelechargement.addEventListener('click', e => telecharger(lienTelechargement));
     fichierInvite.addEventListener('change', e => charger(e));
